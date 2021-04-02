@@ -5,20 +5,19 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".BeerkezettActivity">
+    tools:context=".activity.BeerkezettActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <include
-            layout="@layout/main_toolbar"/>
+        <include layout="@layout/main_toolbar" />
 
         <FrameLayout
+            android:id="@+id/frame"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/frame">
+            android:layout_height="match_parent">
 
         </FrameLayout>
 
@@ -48,30 +47,5 @@
         <include layout="@layout/main_nav_drawer" />
 
     </RelativeLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewBeerkezett"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
-
-        <TextView
-            android:id="@+id/nev"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/nev" />
-
-        <TextView
-            android:id="@+id/cim"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/cim" />
-
-        <TextView
-            android:id="@+id/telefonszam"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/telefonszam" />
-    </androidx.recyclerview.widget.RecyclerView>
 
 </androidx.drawerlayout.widget.DrawerLayout>

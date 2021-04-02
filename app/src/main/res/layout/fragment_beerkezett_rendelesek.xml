@@ -1,7 +1,4 @@
-<TextView android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:text="Rendelések"
-    android:textSize="50sp"
-    android:textStyle="bold"
-    android:gravity="center"
-    xmlns:android="http://schemas.android.com/apk/res/android" />
+<androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/recyclerViewBeerkezett"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" />
