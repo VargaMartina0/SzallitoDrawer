@@ -13,19 +13,21 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.szallitodrawer.services.BeRendelesService;
 import com.example.szallitodrawer.R;
 import com.example.szallitodrawer.adapter.BeerkezettRecyclerAdapter;
+import com.example.szallitodrawer.adapter.KeszRecyclerAdapter;
+import com.example.szallitodrawer.services.BeRendelesService;
+import com.example.szallitodrawer.services.KeszRendelesService;
 
-public class BeerkezettRendelesekFragment extends Fragment {
+public class KeszRendelesekFragment extends Fragment {
 
-    private BeerkezettRecyclerAdapter recyclerAdapter;
+    private KeszRecyclerAdapter recyclerAdapter;
 
     private FragmentManager.OnBackStackChangedListener listener = new FragmentManager.OnBackStackChangedListener() {
         @Override
         public void onBackStackChanged() {
             if (isVisible()) {
-                recyclerAdapter.setRendelesList(BeRendelesService.getInstance().getRendelesList());
+                recyclerAdapter.setKeszRendelesList(KeszRendelesService.getInstance().getKeszRendelesList());
             }
         }
     };
@@ -34,16 +36,16 @@ public class BeerkezettRendelesekFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_beerkezett_rendelesek, container, false);
+        return inflater.inflate(R.layout.fragment_kesz_rendelesek, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        RecyclerView recyclerView = view.findViewById(R.id.recyclerViewBeerkezett);
+        RecyclerView recyclerView = view.findViewById(R.id.recyclerViewKesz);
 
-        recyclerAdapter = new BeerkezettRecyclerAdapter();
+        recyclerAdapter = new KeszRecyclerAdapter();
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false);
         /*
         AVOID USING APPLICATION CONTEXT reference when possible
@@ -53,7 +55,7 @@ public class BeerkezettRendelesekFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(recyclerAdapter);
-        recyclerAdapter.setRendelesList(BeRendelesService.getInstance().getRendelesList());
+        recyclerAdapter.setKeszRendelesList(KeszRendelesService.getInstance().getKeszRendelesList());
 
         getFragmentManager().addOnBackStackChangedListener(listener);
 

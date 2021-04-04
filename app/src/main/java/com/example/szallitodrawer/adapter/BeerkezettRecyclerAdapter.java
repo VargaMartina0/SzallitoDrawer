@@ -3,6 +3,8 @@ package com.example.szallitodrawer.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,7 +15,7 @@ import com.example.szallitodrawer.data.Rendeles;
 
 import java.util.List;
 
-public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyViewHolder> {
+public class BeerkezettRecyclerAdapter extends RecyclerView.Adapter<BeerkezettRecyclerAdapter.BeerkezettMyViewHolder> {
 
     /**
      * use of list as type declaration is preferred
@@ -33,7 +35,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
 
     @NonNull
     @Override
-    public RecyclerAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public BeerkezettRecyclerAdapter.BeerkezettMyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         /*
         you inflated R.layout.activity_beerkezett here
@@ -43,18 +45,18 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
          */
 
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_beerkezett, parent, false);
-        return new MyViewHolder(itemView);
+        return new BeerkezettMyViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerAdapter.MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull BeerkezettRecyclerAdapter.BeerkezettMyViewHolder holder, int position) {
         /*String nev = BeRendelesListSingleton.getRendelesList(position).getNev();
         holder.nevText.setText(nev);
         String cim = rendelesList.get(position).getCim();
         holder.cimText.setText(cim);
         String telefonszam = rendelesList.get(position).getTelefonszam();
         holder.telefonszamText.setText(telefonszam);*/
-        holder.bind(this.rendelesList.get(position));
+        holder.beBind(this.rendelesList.get(position));
     }
 
     @Override
@@ -68,23 +70,52 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
      * <p>
      * internal classes look nicer if they are first or last in containing class
      */
-    public static class MyViewHolder extends RecyclerView.ViewHolder {
+    public class BeerkezettMyViewHolder extends RecyclerView.ViewHolder {
         private final TextView nevText;
         private final TextView cimText;
         private final TextView telefonszamText;
+        private final Button torles;
+        private final CheckBox checkBox;
 
-        public MyViewHolder(final View view) {
+        public BeerkezettMyViewHolder(final View view) {
             super(view);
             nevText = view.findViewById(R.id.nev);
             cimText = view.findViewById(R.id.cim);
             telefonszamText = view.findViewById(R.id.telefonszam);
+            torles = view.findViewById(R.id.torlesButton);
+            torles.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int id = getAdapterPosition();
+                    removeRendeles(id);
+                }
+            });
+            checkBox = view.findViewById(R.id.checkBox);
+            checkBox.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    // Is the view now checked?
+                    boolean checked = ((CheckBox) view).isChecked();
+
+                    switch(view.getId()) {
+                        case R.id.checkBox:
+                            if (checked){
+
+                            }
+                            // Put some meat on the sandwich
+                            else
+                                // Remove the meat
+                            break;
+                    }
+                }
+            });
 
         }
 
         /**
          * don't pass position to the bound layout
          */
-        public void bind(Rendeles rendeles) {
+        public void beBind(Rendeles rendeles) {
             nevText.setText(rendeles.getNev());
             cimText.setText(rendeles.getCim());
             telefonszamText.setText(rendeles.getTelefonszam());
@@ -94,5 +125,11 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
              */
             int position = getAdapterPosition();
         }
+
+    }
+    public void removeRendeles(int id){
+        rendelesList.remove(id);
+        notifyItemRemoved(id);
+        notifyItemRangeChanged(id, rendelesList.size());
     }
 }

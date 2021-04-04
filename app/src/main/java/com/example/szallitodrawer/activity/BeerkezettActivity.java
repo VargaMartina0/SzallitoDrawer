@@ -27,7 +27,7 @@ public class BeerkezettActivity extends AppCompatActivity {
 
         drawerLayout = findViewById(R.id.drawer_layout);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fabBeerkezett);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -35,7 +35,7 @@ public class BeerkezettActivity extends AppCompatActivity {
 //                fragmentTransaction.replace(R.id.drawer_layout, new UjRendelesFragment()).commit();
                 getSupportFragmentManager()
                         .beginTransaction()
-                        .add(R.id.frame, new UjRendelesFragment())
+                        .add(R.id.frameBeerkezett, new UjRendelesFragment())
                         .addToBackStack("Matykó")
                         .commit();
 
@@ -44,8 +44,10 @@ public class BeerkezettActivity extends AppCompatActivity {
 
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.frame, new BeerkezettRendelesekFragment())
+                .replace(R.id.frameBeerkezett, new BeerkezettRendelesekFragment())
                 .commit();
+
+
     }
 
     public void ClickMenu(View view) {

@@ -7,4 +7,5 @@
     <string name="nev">Név:</string>
     <string name="telefonszam">Telefonszám:</string>
     <string name="kesz">Kész</string>
+    <string name="torles">Törlés</string>
 </resources>

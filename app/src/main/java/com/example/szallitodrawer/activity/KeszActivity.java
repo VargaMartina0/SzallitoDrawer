@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.example.szallitodrawer.R;
+import com.example.szallitodrawer.fragment.UjRendelesFragment;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class KeszActivity extends AppCompatActivity {
 
@@ -18,6 +20,21 @@ public class KeszActivity extends AppCompatActivity {
         setContentView(R.layout.activity_kesz);
 
         drawerLayout = findViewById(R.id.drawer_layout);
+
+        FloatingActionButton fab = findViewById(R.id.fabKesz);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+//                fragmentTransaction.replace(R.id.drawer_layout, new UjRendelesFragment()).commit();
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .add(R.id.frameKesz, new UjRendelesFragment())
+                        .addToBackStack("Matykó")
+                        .commit();
+
+            }
+        });
     }
 
     public void ClickMenu(View view){
