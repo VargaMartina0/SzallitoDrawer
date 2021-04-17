@@ -1,18 +1,30 @@
 package com.example.szallitodrawer.adapter;
 
+import android.app.Activity;
+import android.content.Context;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.szallitodrawer.R;
+import com.example.szallitodrawer.activity.KeszActivity;
 import com.example.szallitodrawer.data.Rendeles;
+import com.example.szallitodrawer.fragment.KeszRendelesekFragment;
+import com.example.szallitodrawer.services.KeszRendelesService;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 
 public class KeszRecyclerAdapter extends RecyclerView.Adapter<KeszRecyclerAdapter.MyViewHolder> {
 
@@ -20,7 +32,9 @@ public class KeszRecyclerAdapter extends RecyclerView.Adapter<KeszRecyclerAdapte
      * use of list as type declaration is preferred
      * ArrayList is an implementation, List is an abstraction
      */
-    private List<Rendeles> keszRendelesList;
+    public List<Rendeles> keszRendelesList;
+    private Context context;
+
 
     /**
      * a better way to handle incoming data is to add setters for them
@@ -32,6 +46,11 @@ public class KeszRecyclerAdapter extends RecyclerView.Adapter<KeszRecyclerAdapte
         notifyDataSetChanged();
     }
 
+    public KeszRecyclerAdapter(Context context){
+        this.context = context;
+    }
+
+
     @NonNull
     @Override
     public KeszRecyclerAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -42,6 +61,7 @@ public class KeszRecyclerAdapter extends RecyclerView.Adapter<KeszRecyclerAdapte
         that layout belongs to the activity, this causes a circular referencing throughout the application
         use list_item_ layouts (practical)
          */
+
 
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_kesz, parent, false);
         return new KeszRecyclerAdapter.MyViewHolder(itemView);
@@ -74,6 +94,8 @@ public class KeszRecyclerAdapter extends RecyclerView.Adapter<KeszRecyclerAdapte
         private final TextView cimText;
         private final TextView telefonszamText;
         private final Button torles;
+        //private final Button algButton;
+
 
         public MyViewHolder(final View view) {
             super(view);
@@ -85,9 +107,72 @@ public class KeszRecyclerAdapter extends RecyclerView.Adapter<KeszRecyclerAdapte
                 @Override
                 public void onClick(View view) {
                     int id = getAdapterPosition();
-                    removeRendeles(id);
+                    keszRendelesList.remove(id);
+                    notifyDataSetChanged();
                 }
             });
+            /*algButton = view.findViewById(R.id.algoritmus);
+            *//*if(BeRendelesService.getInstance().getRendelesList().size()<10){
+                algButton.setEnabled(false);
+            }else algButton.setEnabled(true);*//*
+            algButton.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View view){
+                    int size = KeszRendelesService.getInstance().getKeszRendelesList().size();
+                    double[][] locations = new double[size][2];
+                    StringBuilder sb = new StringBuilder();
+
+                    for(int i=0; i<size; i++ ) {
+                        String address = KeszRendelesService.getInstance().getKeszRendelesList().get(i).getCim();
+
+                        Geocoder geocoder = new Geocoder(context, Locale.getDefault());
+                        try{
+                            List addressList = geocoder.getFromLocationName(address,1);
+                            if(addressList!= null && addressList.size()>0){
+                                Address addressA = (Address) addressList.get(0);
+                                locations[i][0] = addressA.getLatitude();
+                                locations[i][1] = addressA.getLongitude();
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+
+
+                    double[][] distances = getDistances(locations, size);
+                    sb.append(distances[0][1]);
+                    Toast toast = Toast.makeText(context, sb.toString(), Toast.LENGTH_LONG);
+                    toast.show();
+
+                    for(int i=0; i<size; i++){
+                        keszRendelesList.remove(i);
+                        notifyDataSetChanged();
+                    }
+
+
+                }
+            });*/
+
+
+        }
+        public double[][] getDistances(double[][] locations, int size) {
+            double[][] distances = new double[size][size];
+            for(int i=0; i<size; i++){
+                for(int j=0; j<size; j++){
+                    Location loc1 = new Location("");
+                    loc1.setLatitude(locations[i][0]);
+                    loc1.setLongitude(locations[i][1]);
+
+                    Location loc2 = new Location("");
+                    loc2.setLatitude(locations[j][0]);
+                    loc2.setLongitude(locations[j][1]);
+
+                    double distanceInMeters = loc1.distanceTo(loc2);
+                    distances[i][j] = distanceInMeters;
+                }
+            }
+            return distances;
         }
 
 
@@ -105,11 +190,6 @@ public class KeszRecyclerAdapter extends RecyclerView.Adapter<KeszRecyclerAdapte
              */
             int position = getAdapterPosition();
         }
+    }
 
-    }
-    public void removeRendeles(int id){
-        keszRendelesList.remove(id);
-        notifyItemRemoved(id);
-        notifyItemRangeChanged(id, keszRendelesList.size());
-    }
 }

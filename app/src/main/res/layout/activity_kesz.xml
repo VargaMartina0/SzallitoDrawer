@@ -15,6 +15,12 @@
 
         <include layout="@layout/main_toolbar" />
 
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Algoritmus"
+            android:id="@+id/algoritmus"/>
+
         <FrameLayout
             android:id="@+id/frameKesz"
             android:layout_width="match_parent"

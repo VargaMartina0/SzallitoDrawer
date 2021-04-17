@@ -1,5 +1,6 @@
 package com.example.szallitodrawer.services;
 
+import com.example.szallitodrawer.adapter.KeszRecyclerAdapter;
 import com.example.szallitodrawer.data.Rendeles;
 
 import java.util.ArrayList;
@@ -46,6 +47,7 @@ public class KeszRendelesService {
     private final List<Rendeles> keszRendelesList = new ArrayList<>();
 
     private KeszRendelesService() {
+        keszRendelesList.add(new Rendeles("Próba", "Budapest", ""));
     }
 
     public List<Rendeles> getKeszRendelesList() {
@@ -58,4 +60,5 @@ public class KeszRendelesService {
     public void addRendeles(Rendeles rendeles) {
         keszRendelesList.add(rendeles);
     }
+
 }

@@ -6,13 +6,17 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.szallitodrawer.R;
 import com.example.szallitodrawer.data.Rendeles;
+import com.example.szallitodrawer.services.BeRendelesService;
+import com.example.szallitodrawer.services.KeszRendelesService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class BeerkezettRecyclerAdapter extends RecyclerView.Adapter<BeerkezettRecyclerAdapter.BeerkezettMyViewHolder> {
@@ -96,19 +100,21 @@ public class BeerkezettRecyclerAdapter extends RecyclerView.Adapter<BeerkezettRe
                 public void onClick(View view) {
                     // Is the view now checked?
                     boolean checked = ((CheckBox) view).isChecked();
+                    int number = getAdapterPosition();
 
                     switch(view.getId()) {
                         case R.id.checkBox:
                             if (checked){
-
+                                String nev = BeRendelesService.getInstance().getRendelesList().get(number).getNev();
+                                String cim = BeRendelesService.getInstance().getRendelesList().get(number).getCim();
+                                String telefonszam = BeRendelesService.getInstance().getRendelesList().get(number).getTelefonszam();
+                                KeszRendelesService.getInstance().addRendeles(new Rendeles(nev,cim,telefonszam));
+                                removeRendeles(number);
                             }
-                            // Put some meat on the sandwich
-                            else
-                                // Remove the meat
-                            break;
                     }
                 }
             });
+            
 
         }
 
