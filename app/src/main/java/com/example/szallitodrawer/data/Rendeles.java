@@ -1,4 +1,4 @@
-package com.example.szallitodrawer;
+package com.example.szallitodrawer.data;
 
 public class Rendeles {
 
