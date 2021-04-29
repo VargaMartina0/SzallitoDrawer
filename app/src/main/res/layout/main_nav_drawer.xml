@@ -32,7 +32,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="48dp"
-            android:src="@drawable/ic_home"/>
+            android:src="@drawable/ic_beerkezett"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -52,7 +52,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="48dp"
-            android:src="@drawable/ic_dashboard_black_24dp"/>
+            android:src="@drawable/ic_kesz_rendeles"/>
     </LinearLayout>
 
     <LinearLayout
@@ -73,7 +73,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="48dp"
-            android:src="@drawable/ic_info"/>
+            android:src="@drawable/ic_futar"/>
             
     </LinearLayout>
 

@@ -124,6 +124,7 @@ public class BeerkezettActivity extends AppCompatActivity {
         Intent intent = new Intent(activity, aClass);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         activity.startActivity(intent);
+        activity.finish();
     }
 
     @Override

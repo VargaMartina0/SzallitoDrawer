@@ -1,15 +1,20 @@
 package com.example.szallitodrawer;
 
+import java.time.LocalTime;
+import java.util.Date;
+
 public class Rendeles {
 
     private String nev;
     private String cim;
     private String telefonszam;
+    private LocalTime localTime;
 
     public Rendeles(String nev, String cim, String telefonszam) {
         this.nev = nev;
         this.cim = cim;
         this.telefonszam = telefonszam;
+        this.localTime = LocalTime.now();
     }
 
     public void setNev(String nev) {
@@ -35,4 +40,6 @@ public class Rendeles {
     public String getTelefonszam() {
         return telefonszam;
     }
+
+    public LocalTime getLocalTime(){return localTime;}
 }
