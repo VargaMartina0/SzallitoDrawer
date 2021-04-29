@@ -1,31 +1,19 @@
 package com.example.szallitodrawer.adapter;
 
-import android.app.Activity;
-import android.content.Context;
-import android.location.Address;
-import android.location.Geocoder;
-import android.location.Location;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewParent;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.szallitodrawer.R;
-import com.example.szallitodrawer.activity.KeszActivity;
 import com.example.szallitodrawer.data.OnClickListener;
 import com.example.szallitodrawer.data.Rendeles;
-import com.example.szallitodrawer.fragment.KeszRendelesekFragment;
-import com.example.szallitodrawer.services.KeszRendelesService;
 
-import java.io.IOException;
 import java.util.List;
-import java.util.Locale;
 
 public class KeszRecyclerAdapter extends RecyclerView.Adapter<KeszRecyclerAdapter.MyViewHolder> {
 
@@ -70,12 +58,14 @@ public class KeszRecyclerAdapter extends RecyclerView.Adapter<KeszRecyclerAdapte
 
     @Override
     public void onBindViewHolder(@NonNull KeszRecyclerAdapter.MyViewHolder holder, final int position) {
+
         /*String nev = BeRendelesListSingleton.getRendelesList(position).getNev();
         holder.nevText.setText(nev);
         String cim = rendelesList.get(position).getCim();
         holder.cimText.setText(cim);
         String telefonszam = rendelesList.get(position).getTelefonszam();
         holder.telefonszamText.setText(telefonszam);*/
+
         new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -103,6 +93,8 @@ public class KeszRecyclerAdapter extends RecyclerView.Adapter<KeszRecyclerAdapte
         private final TextView telefonszamText;
         private final Button torles;
 
+        //private final Button algButton;
+
 
         public MyViewHolder(final View view) {
             super(view);
@@ -120,26 +112,13 @@ public class KeszRecyclerAdapter extends RecyclerView.Adapter<KeszRecyclerAdapte
             });
         }
 
-
-
         /**
          * don't pass position to the bound layout
          */
-        public void bind(Rendeles rendeles) {
+        public void bind (Rendeles rendeles){
             nevText.setText(rendeles.getNev());
             cimText.setText(rendeles.getCim());
             telefonszamText.setText(rendeles.getTelefonszam());
-
-            /*
-            current position is adapter can be retrieved
-             */
-            int position = getAdapterPosition();
         }
-
     }
-/*    public void removeRendeles(){
-        keszRendelesList.removeAll(keszRendelesList);
-        notifyDataSetChanged();
-    }*/
-
 }

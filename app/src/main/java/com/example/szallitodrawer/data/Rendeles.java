@@ -1,7 +1,6 @@
-package com.example.szallitodrawer;
+package com.example.szallitodrawer.data;
 
 import java.time.LocalTime;
-import java.util.Date;
 
 public class Rendeles {
 

@@ -1,5 +1,4 @@
-package com.example.szallitodrawer;
-
+package com.example.szallitodrawer.fragment;
 
 import android.os.Bundle;
 
@@ -13,6 +12,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.example.szallitodrawer.services.BeRendelesService;
+import com.example.szallitodrawer.R;
+import com.example.szallitodrawer.data.Rendeles;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -48,9 +50,8 @@ public class UjRendelesFragment extends Fragment {
                 String cim = cim_editText.getText().toString();
                 String nev = nev_editText.getText().toString();
                 String telefonszam = telefonszam_editText.getText().toString();
-                BeRendelesListSingleton.get().addRendeles(new Rendeles(nev,cim,telefonszam));
+                BeRendelesService.getInstance().addRendeles(new Rendeles(nev,cim,telefonszam));
                 getFragmentManager().popBackStack();
-
 
                 nev_editText.setText("");
                 cim_editText.setText("");

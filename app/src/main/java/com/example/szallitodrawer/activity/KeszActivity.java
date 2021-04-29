@@ -3,24 +3,18 @@ package com.example.szallitodrawer.activity;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
-import android.nfc.NfcAdapter;
 import android.os.Bundle;
-import android.telecom.Call;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.example.szallitodrawer.R;
 import com.example.szallitodrawer.adapter.KeszRecyclerAdapter;
 import com.example.szallitodrawer.data.Rendeles;
-import com.example.szallitodrawer.fragment.BeerkezettRendelesekFragment;
 import com.example.szallitodrawer.fragment.KeszRendelesekFragment;
 import com.example.szallitodrawer.fragment.UjRendelesFragment;
-import com.example.szallitodrawer.services.BeRendelesService;
 import com.example.szallitodrawer.services.KeszRendelesService;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -59,21 +53,30 @@ public class KeszActivity extends AppCompatActivity {
                 .beginTransaction()
                 .replace(R.id.frameKesz, new KeszRendelesekFragment())
                 .commit();
+
         final Button algButton = findViewById(R.id.algoritmus);
+        /*if(BeRendelesService.getInstance().getRendelesList().size()<10){
+            algButton.setEnabled(false);
+        }else algButton.setEnabled(true);*/
+        algButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                 int size = KeszRendelesService.getInstance().getKeszRendelesList().size() + 1;
+                 Rendeles etterem = new Rendeles("Étterem", "Esztergom Dorogi út 5", "");
+                 KeszRendelesService.getInstance().getKeszRendelesList().add(etterem);
+             }
+        });
         /*if(BeRendelesService.getInstance().getRendelesList().size()<10){
             algButton.setEnabled(false);
         }else algButton.setEnabled(true);*/
         algButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                int size = KeszRendelesService.getInstance().getKeszRendelesList().size()+1;
-                Rendeles etterem = new Rendeles("Étterem", "Esztergom Dorogi út 5", "");
-                KeszRendelesService.getInstance().getKeszRendelesList().add(etterem);
+                int size = KeszRendelesService.getInstance().getKeszRendelesList().size();
                 double[][] locations = new double[size][2];
                 StringBuilder sb = new StringBuilder();
                 for(int i=0; i<size; i++ ) {
                     String address = KeszRendelesService.getInstance().getKeszRendelesList().get(i).getCim();
-//                    GeoLocation geoLocation = new GeoLocation();
 
                     Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
                     try{
@@ -106,9 +109,6 @@ public class KeszActivity extends AppCompatActivity {
                 //times -> percben
                 //hatralevoIdo -> percben
 
-                sb.append(distances[0][1]);
-                Toast toast = Toast.makeText(getApplicationContext(), sb.toString(), Toast.LENGTH_LONG);
-                toast.show();
 
                 int[] hatralevoIdo = new int[size];
                 LocalTime ido;
@@ -129,6 +129,7 @@ public class KeszActivity extends AppCompatActivity {
 
             }
         });
+
     }
 
     public double[][] getDistances(double[][] locations, int size) {
@@ -177,6 +178,7 @@ public class KeszActivity extends AppCompatActivity {
         super.onPause();
         BeerkezettActivity.closeDrawer(drawerLayout);
     }
+
     private int[] algoritmus(double[][] distances, double[][] times, int[] hatralevoIdo){
         int[] indexes = new int[5];
         return indexes;

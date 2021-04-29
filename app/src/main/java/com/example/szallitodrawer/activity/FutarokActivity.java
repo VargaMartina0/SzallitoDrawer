@@ -1,10 +1,12 @@
-package com.example.szallitodrawer;
+package com.example.szallitodrawer.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.os.Bundle;
 import android.view.View;
+
+import com.example.szallitodrawer.R;
 
 public class FutarokActivity extends AppCompatActivity {
 

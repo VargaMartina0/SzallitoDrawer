@@ -1,12 +1,12 @@
 package com.example.szallitodrawer.services;
 
-import com.example.szallitodrawer.adapter.KeszRecyclerAdapter;
 import com.example.szallitodrawer.data.Rendeles;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class KeszRendelesService{
+public class KeszRendelesService {
+
     /**
      * thread synchronization object
      */
@@ -48,18 +48,13 @@ public class KeszRendelesService{
 
     private KeszRendelesService() {}
 
+
     public List<Rendeles> getKeszRendelesList() {
         return keszRendelesList;
     }
 
-    /*public Rendeles getRendeles(int position){
-        return getRendelesList().get(position);
-    }*/
     public void addRendeles(Rendeles rendeles) {
         keszRendelesList.add(rendeles);
     }
 
-    public void removeRendeles(){
-        keszRendelesList.removeAll(keszRendelesList);
-    }
 }
