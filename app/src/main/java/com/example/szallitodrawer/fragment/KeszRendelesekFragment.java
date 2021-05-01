@@ -44,9 +44,6 @@ public class KeszRendelesekFragment extends Fragment implements OnClickListener 
         }
     };
 
-    public KeszRecyclerAdapter getRecyclerAdapter(){
-        return recyclerAdapter;
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

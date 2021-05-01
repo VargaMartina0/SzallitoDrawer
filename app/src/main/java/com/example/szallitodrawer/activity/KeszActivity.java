@@ -2,6 +2,7 @@ package com.example.szallitodrawer.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.DialogFragment;
 
 import android.location.Address;
 import android.location.Geocoder;
@@ -9,18 +10,25 @@ import android.location.Location;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.szallitodrawer.R;
 import com.example.szallitodrawer.adapter.KeszRecyclerAdapter;
 import com.example.szallitodrawer.data.Rendeles;
 import com.example.szallitodrawer.fragment.KeszRendelesekFragment;
+import com.example.szallitodrawer.fragment.SzallitasFragment;
 import com.example.szallitodrawer.fragment.UjRendelesFragment;
 import com.example.szallitodrawer.services.KeszRendelesService;
+import com.example.szallitodrawer.services.SzallitasRendelesService;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.time.Duration;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -58,25 +66,20 @@ public class KeszActivity extends AppCompatActivity {
         /*if(BeRendelesService.getInstance().getRendelesList().size()<10){
             algButton.setEnabled(false);
         }else algButton.setEnabled(true);*/
-        algButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                 int size = KeszRendelesService.getInstance().getKeszRendelesList().size() + 1;
-                 Rendeles etterem = new Rendeles("Étterem", "Esztergom Dorogi út 5", "");
-                 KeszRendelesService.getInstance().getKeszRendelesList().add(etterem);
-             }
-        });
-        /*if(BeRendelesService.getInstance().getRendelesList().size()<10){
-            algButton.setEnabled(false);
-        }else algButton.setEnabled(true);*/
         algButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                int size = KeszRendelesService.getInstance().getKeszRendelesList().size();
+                //TODO: ki kell törölni a szallitasListból a rendeléseket -> implements OnClickListener kell
+                int size = KeszRendelesService.getInstance().getKeszRendelesList().size() + 1;
+                Rendeles etterem = new Rendeles("Étterem", "Esztergom Dorogi út 5", "");
+                //KeszRendelesService.getInstance().getKeszRendelesList().add(etterem);
+                List<Rendeles> algList = new ArrayList<>();
+                algList.add(etterem);
+                algList.addAll(KeszRendelesService.getInstance().getKeszRendelesList());
                 double[][] locations = new double[size][2];
-                StringBuilder sb = new StringBuilder();
                 for(int i=0; i<size; i++ ) {
-                    String address = KeszRendelesService.getInstance().getKeszRendelesList().get(i).getCim();
+                    //String address = KeszRendelesService.getInstance().getKeszRendelesList().get(i).getCim();
+                    String address = algList.get(i).getCim();
 
                     Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
                     try{
@@ -115,18 +118,53 @@ public class KeszActivity extends AppCompatActivity {
                 long timeDifference;
                 for(int j=0; j<size; j++){
                     ido = LocalTime.now();
-                    LocalTime l1 = KeszRendelesService.getInstance().getKeszRendelesList().get(j).getLocalTime();
+                    LocalTime l1 = algList.get(j).getLocalTime();//KeszRendelesService.getInstance().getKeszRendelesList().get(j).getLocalTime();
                     timeDifference = Duration.between(l1, ido).toMinutes();
                     hatralevoIdo[j] = 80 - (int) timeDifference;
                 }
-                algoritmus(distances,times,hatralevoIdo);
+                hatralevoIdo[0] = 0;
+                int[] indexes = algoritmus(distances,times,hatralevoIdo);
+                //TODO: indexekből meg kell mondani hogy melyikek a törölhető rendelések
+                int[] torolhetoRendelesek;//TODO: ezt még inicializálni kell, ez int[]?
 
-                int[] torolhetoRendelesek;//TODO: ezt még inicializálni kell
-                for(int j=0; j<size; j++){//TODO: most az egészet törli, de ha megvannak a torolhetoRendelesek, akkor majd itt annak a méretéig kell menni
-                    KeszRecyclerAdapter.listener.removeRendeles(j);
+                //tfh az utolsó az etterem, szóval azt kihagyjuk, így csak a lenght-1-ig megyünk
+                int number;
+                Rendeles rendeles;
+                for(int j=0; j<indexes.length-1; j++){//TODO: itt is majd az indexes size-a kell
+                    number = indexes[j];
+                    rendeles = algList.get(number);//KeszRendelesService.getInstance().getKeszRendelesList().get(number);
+                    SzallitasRendelesService.getInstance().addSzallithatoRendeles(rendeles);
+                }//kiveszem a kesz listából ami kell és berakom a szállíthatók közé
+
+                List<Integer> indexesList = new ArrayList<>();// = new ArrayList(Arrays.asList(indexes));
+                for(int j=0; j<indexes.length; j++){
+                    indexesList.add(indexes[j]);
+                }
+                Collections.sort(indexesList);
+                Collections.reverse(indexesList);
+                /*StringBuilder sb = new StringBuilder();
+
+                Toast toast = new Toast(getApplicationContext());
+                toast.makeText(getApplicationContext(), sb, Toast.LENGTH_LONG).show();*/
+
+                for(int j=0; j<size-1; j++){//TODO: most az egészet törli, de ha megvannak a torolhetoRendelesek, akkor majd itt annak a méretéig kell menni
+                    System.out.println(KeszRendelesService.getInstance().getKeszRendelesList().get(0).getNev());
+                    System.out.println(KeszRendelesService.getInstance().getKeszRendelesList().size());
+                    KeszRecyclerAdapter.listener.removeRendeles(0);
+
                 }
 
 
+                //TODO: ki kell törölni a KeszRendelesServiceből az éttermet
+                //KeszRecyclerAdapter.listener.removeRendeles(0);
+
+                /*getSupportFragmentManager()
+                        .beginTransaction()
+                        .add(R.id.frameKesz, new SzallitasFragment())
+                        .addToBackStack("Hi")
+                        .commit();*/
+                DialogFragment newFragment = SzallitasFragment.newInstance();
+                newFragment.show(getSupportFragmentManager().beginTransaction(), "dialog");
             }
         });
 
@@ -180,7 +218,12 @@ public class KeszActivity extends AppCompatActivity {
     }
 
     private int[] algoritmus(double[][] distances, double[][] times, int[] hatralevoIdo){
-        int[] indexes = new int[5];
+        int[] indexes = new int[hatralevoIdo.length];
+        for(int i =0; i<hatralevoIdo.length; i++){//TODO: ezt most nyilván csak feltöltöm az összes index-szel
+            indexes[i] = i;
+        }
+        indexes[0] = indexes.length-1;
+        indexes[indexes.length-1] = 0;
         return indexes;
     }
 }
